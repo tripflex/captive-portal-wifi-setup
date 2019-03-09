@@ -1,0 +1,43 @@
+author: Myles McNamara <myles@smyl.es>
+type: lib
+description: Captive Portal WiFi Setup, Configuration, and Testing Library
+version: 1.0
+# platforms: [ cc3200, cc3220, esp32, esp8266 ]
+
+sources:
+  - src
+
+filesystem:
+  - fs
+
+includes:
+  - include
+
+config_schema:
+  - [ "cportal", "o", {title: "Captive Portal configurations"}]
+  - [ "cportal.setup", "o", {title: "Captive Portal WiFi Setup configurations"}]
+  - [ "cportal.setup.copy", "i", 0, {title: "Copy SSID and Password to this STA ID after succesful test ( 0 - wifi.sta | 1 - wifi.sta1 | 2 - wifi.sta2 )"}]
+  - [ "cportal.setup.timeout", "i", 30, {title: "Timeout, in seconds, before considering a WiFi connection test as failed"}]
+  - [ "cportal.setup.disable", "i", 2, {title: "Action to perform after successful test and copy/save values -- 0 - do nothing, 1 - Disable AP (wifi.ap.enable), 2 - Disable AP and Captive Portal (cportal.enable)"}]
+  - [ "cportal.setup.reboot", "i", 0, {title: "0 to disable, or value (in seconds) to wait and then reboot device, after successful test (and copy/save values)"}]
+
+libs:
+  - origin: https://github.com/mongoose-os-libs/wifi
+
+tags:
+  - c
+  - wifi
+  - setup
+  - js
+  - portal
+  - captive
+
+cdefs:
+  # Keep AP enabled while STA active (this needs to be set to 1, but can be bypassed by setting "wifi.ap.keep_enabled" to false later on in code)
+  MGOS_WIFI_ENABLE_AP_STA: 1
+
+init_after:
+  - wifi
+  - http-server
+
+manifest_version: 2017-09-29
