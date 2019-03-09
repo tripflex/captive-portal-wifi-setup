@@ -20,7 +20,6 @@
 
 #include <stdbool.h>
 #include <mgos.h>
-#include "mgos_http_server.h"
 #include "mgos_event.h"
 
 typedef void (*wifi_setup_test_cb_t)(bool result, char *ssid, char* password, void *userdata);

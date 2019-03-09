@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Myles McNamara
+ * Copyright (c) 2019 Myles McNamara <https://smyl.es>
  * All rights reserved
  *
  * Licensed under the Apache License, Version 2.0 (the ""License"");
@@ -25,9 +25,6 @@
 #include "mgos_captive_portal_wifi_setup.h"
 
 #include "mongoose.h"
-
-char *s_test_ssid = NULL;
-char *s_test_pass = NULL;
 
 static int s_connection_retries = 0;
 static mgos_timer_id s_connect_timer_id = MGOS_INVALID_TIMER_ID;
@@ -148,10 +145,8 @@ static void add_event_handlers(void){
 }
 
 bool mgos_captive_portal_wifi_setup_test(char *ssid, char *pass, wifi_setup_test_cb_t cb, void *userdata){
-    s_test_ssid = ssid;
-    s_test_pass = pass;
 
-    if (mgos_conf_str_empty(s_test_ssid)){
+    if (mgos_conf_str_empty(ssid)){
         return false;
     }
 
@@ -164,8 +159,8 @@ bool mgos_captive_portal_wifi_setup_test(char *ssid, char *pass, wifi_setup_test
     }
 
     sp_test_sta_vals->enable = 1; // Same as (*test_sta_vals).enable
-    sp_test_sta_vals->ssid = s_test_ssid;
-    sp_test_sta_vals->pass = s_test_pass;
+    sp_test_sta_vals->ssid = ssid;
+    sp_test_sta_vals->pass = pass;
 
     // Make sure to remove any existing handlers (in case of previous test already set)
     remove_event_handlers();
@@ -175,7 +170,7 @@ bool mgos_captive_portal_wifi_setup_test(char *ssid, char *pass, wifi_setup_test
         s_connect_timer_id = mgos_set_timer(timeout_ms, 0, sta_connect_timeout_timer_cb, NULL);
     }
 
-    LOG(LL_INFO, ("Captive Portal WiFi Setup Testing SSID: %s PASS: %s", s_test_ssid, s_test_pass));
+    LOG(LL_INFO, ("Captive Portal WiFi Setup Testing SSID: %s PASS: %s", ssid, pass));
 
     mgos_wifi_disconnect();
     bool result = mgos_wifi_setup_sta(sp_test_sta_vals);
