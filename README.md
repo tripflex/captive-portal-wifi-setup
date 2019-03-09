@@ -11,6 +11,8 @@
       - [`cportal.setup.disable` Setting](#cportalsetupdisable-setting)
       - [`cportal.redirect_file` Setting](#cportalredirect_file-setting)
   - [Installation/Usage](#installationusage)
+    - [Full Captive Portal Stack](#full-captive-portal-stack)
+    - [Only this library](#only-this-library)
     - [Use specific branch of library](#use-specific-branch-of-library)
   - [Required Libraries](#required-libraries)
   - [How it works](#how-it-works)
@@ -55,14 +57,26 @@ Set this equal to the STA ID you want to save the values to (if you want to save
 
 #### `cportal.setup.disable` Setting
 Action to perform after successful test and copy/save values (if enabled)
-`0` - Do Nothing
-`1` - Disable AP `wifi.ap.enable`
-`2` - Disable AP `wifi.ap.enable` and Captive Portal `cportal.enable`
+ - `0` - Do Nothing
+ - `1` - Disable AP `wifi.ap.enable`
+ - `2` - Disable AP `wifi.ap.enable` and Captive Portal `cportal.enable`
 
 #### `cportal.redirect_file` Setting
 This setting if for if you want to use your own custom HTML file as the "redirect" file sent that includes a `meta` refresh tag.  This setting is optional, and when not defined, a dynamically generated response will be sent, that looks similar to this:
 
 ## Installation/Usage
+
+### Full Captive Portal Stack
+If you want all of the features this library was built for, you should install the [Captive Portal WiFi Stack](https://github.com/tripflex/captive-portal-wifi-stack) library instead of just this one:
+
+Add this lib your `mos.yml` file under `libs:`
+
+```yaml
+  - origin: https://github.com/tripflex/captive-portal-wifi-stack
+```
+
+### Only this library
+
 Add this lib your `mos.yml` file under `libs:`
 
 ```yaml
