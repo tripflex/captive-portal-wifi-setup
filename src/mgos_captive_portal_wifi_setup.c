@@ -48,7 +48,7 @@ static void clear_timeout_vals(void){
 
     mgos_event_trigger(MGOS_CAPTIVE_PORTAL_WIFI_SETUP_TEST_FAILED, sp_test_sta_vals);
     if( s_wifi_setup_test_cb != NULL ){
-        s_wifi_setup_test_cb( 0, sp_test_sta_vals->ssid, sp_test_sta_vals->pass, s_wifi_setup_test_userdata );
+        s_wifi_setup_test_cb( false, sp_test_sta_vals->ssid, sp_test_sta_vals->pass, s_wifi_setup_test_userdata );
     }
 }
 
@@ -118,7 +118,7 @@ static void ip_aquired_cb(int ev, void *ev_data, void *userdata){
 
         mgos_event_trigger(MGOS_CAPTIVE_PORTAL_WIFI_SETUP_TEST_SUCCESS, sp_test_sta_vals);
         if( s_wifi_setup_test_cb != NULL ){
-            s_wifi_setup_test_cb( 1, sp_test_sta_vals->ssid, sp_test_sta_vals->pass, s_wifi_setup_test_userdata );
+            s_wifi_setup_test_cb( true, sp_test_sta_vals->ssid, sp_test_sta_vals->pass, s_wifi_setup_test_userdata );
         }
     }
 

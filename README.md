@@ -95,15 +95,15 @@ The `mgos_captive_portal_wifi_setup_test` will return `true` if the test was sta
 
 The `wifi_setup_test_cb_t` is for a callback (optional) after a successful/failed wifi test.
 ```C
-typedef void (*wifi_setup_test_cb_t)(int result, char *ssid, char* password, void *userdata);
+typedef void (*wifi_setup_test_cb_t)(bool result, char *ssid, char* password, void *userdata);
 ```
 
-It will return the result `0` for failed `1` for success, the tested SSID, Password, and any userdata if you passed it when originally calling the function.
+It will return the result `false` for failed `true` for success, the tested SSID, Password, and any userdata if you passed it when originally calling the function.
 
 ### Usage in mJS
 To keep library size to a minimum, no mjs file is included with this library, but you can easily call it using the built in **ffi** for mjs, like this:
 ```javascript
-let testWiFi = ffi('bool mgos_captive_portal_wifi_setup_test(char*,char*,void(*)(int,char*,char*,userdata),userdata)')
+let testWiFi = ffi('bool mgos_captive_portal_wifi_setup_test(char*,char*,void(*)(bool,char*,char*,userdata),userdata)')
 testWiFi( "My SSID", "somePassword", function( success, ssid, pass, userdata){
   print( 'Test Completed!');
 }, NULL );
