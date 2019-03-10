@@ -60,13 +60,13 @@ static void ip_aquired_cb(int ev, void *ev_data, void *userdata){
     char *connectedto = mgos_wifi_get_connected_ssid();
     // struct mgos_config_wifi_sta *sta = (struct mgos_config_wifi_sta *) sp_test_sta_vals;
 
-    LOG(LL_INFO, ("Captive Portal WiFi Setup -- IP Aquired from SSID %s", connectedto ) );
+    LOG(LL_INFO, ("Captive Portal WiFi Setup -- IP Acquired from SSID %s", connectedto ) );
 
     // TODO: maybe check that connected SSID matches the test SSID
 
     free(connectedto);
 
-    // Clear timeout timer on IP Aquired
+    // Clear timeout timer on IP Acquired
     clear_timeout_vals();
     remove_event_handlers();
 
@@ -77,18 +77,52 @@ static void ip_aquired_cb(int ev, void *ev_data, void *userdata){
         if( sta_index > -1 ){
             LOG(LL_INFO, ("Copying SSID %s and Password %s to STA 1 config (wifi.sta)", sp_test_sta_vals->ssid, sp_test_sta_vals->pass ) );
 
+            // TODO: figure out a way to dynamically set the fn to call instead of all this extra code
             if( sta_index == 0 ){
                 mgos_sys_config_set_wifi_sta_enable(true);
                 mgos_sys_config_set_wifi_sta_ssid(sp_test_sta_vals->ssid);
                 mgos_sys_config_set_wifi_sta_pass(sp_test_sta_vals->pass);
+
+                if (!mgos_conf_str_empty(sp_test_sta_vals->user)){
+                    mgos_sys_config_set_wifi_sta_user(sp_test_sta_vals->user);
+                    mgos_sys_config_set_wifi_sta_anon_identity(sp_test_sta_vals->user);
+                    mgos_sys_config_set_wifi_sta_ca_cert("");
+                } else {
+                    mgos_sys_config_set_wifi_sta_user("");
+                    mgos_sys_config_set_wifi_sta_anon_identity("");
+                    mgos_sys_config_set_wifi_sta_ca_cert("");
+                }
+
             } else if( sta_index == 1){
                 mgos_sys_config_set_wifi_sta1_enable(true);
                 mgos_sys_config_set_wifi_sta1_ssid(sp_test_sta_vals->ssid);
                 mgos_sys_config_set_wifi_sta1_pass(sp_test_sta_vals->pass);
+
+                if (!mgos_conf_str_empty(sp_test_sta_vals->user)){
+                    mgos_sys_config_set_wifi_sta1_user(sp_test_sta_vals->user);
+                    mgos_sys_config_set_wifi_sta1_anon_identity(sp_test_sta_vals->user);
+                    mgos_sys_config_set_wifi_sta1_ca_cert("");
+                } else {
+                    mgos_sys_config_set_wifi_sta1_user("");
+                    mgos_sys_config_set_wifi_sta1_anon_identity("");
+                    mgos_sys_config_set_wifi_sta1_ca_cert("");
+                }
+
             } else if( sta_index == 2){
                 mgos_sys_config_set_wifi_sta2_enable(true);
                 mgos_sys_config_set_wifi_sta2_ssid(sp_test_sta_vals->ssid);
                 mgos_sys_config_set_wifi_sta2_pass(sp_test_sta_vals->pass);
+
+                if (!mgos_conf_str_empty(sp_test_sta_vals->user)){
+                    mgos_sys_config_set_wifi_sta2_user(sp_test_sta_vals->user);
+                    mgos_sys_config_set_wifi_sta2_anon_identity(sp_test_sta_vals->user);
+                    mgos_sys_config_set_wifi_sta2_ca_cert("");
+                } else {
+                    mgos_sys_config_set_wifi_sta2_user("");
+                    mgos_sys_config_set_wifi_sta2_anon_identity("");
+                    mgos_sys_config_set_wifi_sta2_ca_cert("");
+                }
+
             }
         }
 
@@ -144,23 +178,9 @@ static void add_event_handlers(void){
     mgos_event_add_handler(MGOS_WIFI_EV_STA_DISCONNECTED, maybe_reconnect, NULL);
 }
 
-bool mgos_captive_portal_wifi_setup_test(char *ssid, char *pass, wifi_setup_test_cb_t cb, void *userdata){
-
-    if (mgos_conf_str_empty(ssid)){
-        return false;
-    }
-
+static bool wifi_setup_test_start(wifi_setup_test_cb_t cb, void *userdata){
     s_wifi_setup_test_cb = cb;
     s_wifi_setup_test_userdata = userdata;
-
-    if (sp_test_sta_vals == NULL){
-        // Allocate memory to store sta values in
-        sp_test_sta_vals = (struct mgos_config_wifi_sta *)calloc(1, sizeof(*sp_test_sta_vals));
-    }
-
-    sp_test_sta_vals->enable = 1; // Same as (*test_sta_vals).enable
-    sp_test_sta_vals->ssid = ssid;
-    sp_test_sta_vals->pass = pass;
 
     // Make sure to remove any existing handlers (in case of previous test already set)
     remove_event_handlers();
@@ -181,6 +201,48 @@ bool mgos_captive_portal_wifi_setup_test(char *ssid, char *pass, wifi_setup_test
     }
 
     return true;
+}
+
+bool mgos_captive_portal_wifi_setup_test_ent(char *ssid, char *pass, char* user, wifi_setup_test_cb_t cb, void *userdata ){
+    if (mgos_conf_str_empty(ssid) || mgos_conf_str_empty(user)){
+        return false;
+    }
+
+    if (sp_test_sta_vals == NULL){
+        // Allocate memory to store sta values in
+        sp_test_sta_vals = (struct mgos_config_wifi_sta *)calloc(1, sizeof(*sp_test_sta_vals));
+    }
+
+    sp_test_sta_vals->enable = 1; // Same as (*test_sta_vals).enable
+    sp_test_sta_vals->ssid = ssid;
+    sp_test_sta_vals->pass = pass;
+    sp_test_sta_vals->user = user;
+    sp_test_sta_vals->anon_identity = user;
+    sp_test_sta_vals->ca_cert = "";
+
+    return wifi_setup_test_start(cb, userdata);
+}
+
+bool mgos_captive_portal_wifi_setup_test(char *ssid, char *pass, wifi_setup_test_cb_t cb, void *userdata ){
+
+    if (mgos_conf_str_empty(ssid)){
+        return false;
+    }
+
+    if (sp_test_sta_vals == NULL){
+        // Allocate memory to store sta values in
+        sp_test_sta_vals = (struct mgos_config_wifi_sta *)calloc(1, sizeof(*sp_test_sta_vals));
+    }
+
+    sp_test_sta_vals->enable = 1; // Same as (*test_sta_vals).enable
+    sp_test_sta_vals->ssid = ssid;
+    sp_test_sta_vals->pass = pass;
+    // Set these empty just in case of previous ENTERPRISE network test
+    sp_test_sta_vals->user = "";
+    sp_test_sta_vals->anon_identity = "";
+    sp_test_sta_vals->ca_cert = "";
+
+    return wifi_setup_test_start(cb, userdata);
 }
 
 bool mgos_captive_portal_wifi_setup_init(void){

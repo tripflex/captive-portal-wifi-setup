@@ -53,7 +53,30 @@ extern "C"
 {
 #endif /* __cplusplus */
 
-bool mgos_captive_portal_wifi_setup_test(char *ssid, char *pass, wifi_setup_test_cb_t cb, void *userdata );
+/**
+ * @brief Start WiFi Credential/Connection test for ENTERPRISE WPA2 networks
+ * 
+ * @param ssid 
+ * @param pass 
+ * @param user 
+ * @param cb 
+ * @param userdata 
+ * @return true 
+ * @return false 
+ */
+bool mgos_captive_portal_wifi_setup_test_ent(char *ssid, char *pass, char* user, wifi_setup_test_cb_t cb, void *userdata );
+/**
+ * @brief Start WiFi Credential/Connection test for Standard OPEN/WEP/WPA2 networks
+ * 
+ * @param ssid 
+ * @param pass 
+ * @param cb 
+ * @param userdata 
+ * @param user 
+ * @return true 
+ * @return false 
+ */
+bool mgos_captive_portal_wifi_setup_test(char *ssid, char *pass, wifi_setup_test_cb_t cb, void *userdata, char* user);
 
 #ifdef __cplusplus
 }

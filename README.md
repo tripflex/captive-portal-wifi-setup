@@ -41,6 +41,7 @@ Myles McNamara ( https://smyl.es )
 - Mongoose OS successful, failed, and started test events
 - Callback for failed/successful test for use in `C` or `mJS`
 - Disable Captive Portal setting after successful test
+- Support for testing Enterprise WPA2 Networks
 
 ## Settings
 Check the `mos.yml` file for latest settings, all settings listed below are defaults
@@ -102,7 +103,32 @@ This library adds `C` functions you can use to test wifi credentials (see below)
 
 ### C Functions
 ```C
+/**
+ * @brief Start WiFi Credential/Connection test for Standard OPEN/WEP/WPA2 networks
+ * 
+ * @param ssid 
+ * @param pass 
+ * @param cb 
+ * @param userdata 
+ * @param user 
+ * @return true 
+ * @return false 
+ */
 bool mgos_captive_portal_wifi_setup_test(char *ssid, char *pass, wifi_setup_test_cb_t cb, void *userdata );
+```
+```C
+/**
+ * @brief Start WiFi Credential/Connection test for ENTERPRISE WPA2 networks
+ * 
+ * @param ssid 
+ * @param pass 
+ * @param user 
+ * @param cb 
+ * @param userdata 
+ * @return true 
+ * @return false 
+ */
+bool mgos_captive_portal_wifi_setup_test_ent(char *ssid, char *pass, char* user, wifi_setup_test_cb_t cb, void *userdata );
 ```
 
 The `mgos_captive_portal_wifi_setup_test` will return `true` if the test was started, `false` if it was not
@@ -124,6 +150,7 @@ testWiFi( "My SSID", "somePassword", function( success, ssid, pass, userdata){
 ```
 
 ## Changelog
+**1.0.1** (March 10, 2019) - Added support for Enterprise Networks
 **1.0.0** (March 9, 2019) - Initial release
 
 ## License
