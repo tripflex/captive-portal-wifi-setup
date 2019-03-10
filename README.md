@@ -207,8 +207,13 @@ testWiFi( "My SSID", "somePassword", function( success, ssid, pass, userdata){
 ```
 
 ## Changelog
-**1.0.1** (March 10, 2019) - Added support for Enterprise Networks
-**1.0.0** (March 9, 2019) - Initial release
+
+**1.0.1** (March 10, 2019) 
+ - Added support for Enterprise Networks
+ - Updated event base to `CPS`
+
+**1.0.0** (March 9, 2019)
+ - Initial release
 
 ## License
 Apache 2.0
