@@ -134,10 +134,11 @@ You can add event handling in mJS by adding this to one of your `.js` files:
 
 ```javascript
 let CaptivePortalWiFiSetup = {
-    START: Event.baseNumber("CPS"),
-    SUCCESS: CaptivePortalWiFiSetup.START + 1,
-    FAILED: CaptivePortalWiFiSetup.START + 2
+    START: Event.baseNumber("CPS")
 };
+
+CaptivePortalWiFiSetup.SUCCESS = CaptivePortalWiFiSetup.START + 1;
+CaptivePortalWiFiSetup.FAILED = CaptivePortalWiFiSetup.START + 2;
 
 function CaptivePortalWiFiEvent(ev, evdata, arg) {
     if (ev === CaptivePortalWiFiSetup.START) {
