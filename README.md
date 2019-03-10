@@ -133,27 +133,23 @@ enum mgos_wifi_captive_portal_event
 You can add event handling in mJS by adding this to one of your `.js` files:
 
 ```javascript
-let CaptivePortalWiFiSetup = {};
-/**
- * MGOS_CAPTIVE_PORTAL_WIFI_SETUP_TEST_START
- * 
- * Called when test is started via RPC
- */
-CaptivePortalWiFiSetup.START = Event.baseNumber("CPS");
+let CaptivePortalWiFiSetup = {
+    START: Event.baseNumber("CPS"),
+    SUCCESS: CaptivePortalWiFiSetup.START + 1,
+    FAILED: CaptivePortalWiFiSetup.START + 2
+};
 
-/**
- * MGOS_CAPTIVE_PORTAL_WIFI_SETUP_TEST_SUCCESS
- * 
- * Succesful test called via RPC method(ev_data: struct mgos_config_wifi_sta * sta)
- */
-CaptivePortalWiFiSetup.SUCCESS = CaptivePortalWiFiSetup.START + 1;
+function CaptivePortalWiFiEvent(ev, evdata, arg) {
+    if (ev === CaptivePortalWiFiSetup.START) {
+      // Test started
+    } else if (ev === CaptivePortalWiFiSetup.SUCCESS) {
+      // Successful test
+    } else if (ev === CaptivePortalWiFiSetup.FAILED) {
+      // Failed test
+    }
+}
 
-/**
- * MGOS_CAPTIVE_PORTAL_WIFI_SETUP_TEST_FAILED
- * 
- * Succesful test called via RPC method(ev_data: struct mgos_config_wifi_sta * sta)
- */
-CaptivePortalWiFiSetup.FAILED = CaptivePortalWiFiSetup.START + 2;
+Event.addGroupHandler(CaptivePortalWiFiSetup.START, CaptivePortalWiFiEvent, null);
 ```
 
 ## Available Functions/Methods
