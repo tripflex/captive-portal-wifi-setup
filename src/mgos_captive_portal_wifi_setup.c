@@ -78,6 +78,8 @@ static void ip_aquired_cb(int ev, void *ev_data, void *userdata){
             LOG(LL_INFO, ("Copying SSID %s and Password %s to STA 1 config (wifi.sta)", sp_test_sta_vals->ssid, sp_test_sta_vals->pass ) );
 
             // TODO: figure out a way to dynamically set the fn to call instead of all this extra code
+            // Maybe check mamuesp common tools for
+            // value = tools_config_get_dyn("my.configuration.%s.my_value", my_key, true);
             if( sta_index == 0 ){
                 mgos_sys_config_set_wifi_sta_enable(true);
                 mgos_sys_config_set_wifi_sta_ssid(sp_test_sta_vals->ssid);

@@ -16,6 +16,8 @@
     - [Use specific branch of library](#use-specific-branch-of-library)
   - [Required Libraries](#required-libraries)
   - [How it works](#how-it-works)
+  - [Events](#events)
+    - [Handling/Triggering Events in mJS](#handlingtriggering-events-in-mjs)
   - [Available Functions/Methods](#available-functionsmethods)
     - [C Functions](#c-functions)
     - [Usage in mJS](#usage-in-mjs)
@@ -98,6 +100,61 @@ To use a specific branch of this library (as example, `dev`), you need to specif
   
 ## How it works
 This library adds `C` functions you can use to test wifi credentials (see below).  For a complete solution, use the Captive Portal WiFi Stack which adds easy methods for calling this (web ui, etc).
+
+## Events
+
+```C
+#define MGOS_CAPTIVE_PORTAL_WIFI_SETUP_EV_BASE MGOS_EVENT_BASE('C', 'P', 'S')
+
+enum mgos_wifi_captive_portal_event
+{
+    /**
+     * Fired when WiFi Setup/Config testing is Started
+     * 
+     * ev_data: struct mgos_config_wifi_sta *sta
+     */
+    MGOS_CAPTIVE_PORTAL_WIFI_SETUP_TEST_START = MGOS_CAPTIVE_PORTAL_WIFI_SETUP_EV_BASE,
+    /**
+     * Fired when succesful connection test for Wifi
+     * 
+     * ev_data: struct mgos_config_wifi_sta *sta
+     */
+    MGOS_CAPTIVE_PORTAL_WIFI_SETUP_TEST_SUCCESS,
+    /**
+     * Fired when failed connection test Wifi
+     * 
+     * ev_data: struct mgos_config_wifi_sta *sta
+     */
+    MGOS_CAPTIVE_PORTAL_WIFI_SETUP_TEST_FAILED
+};
+```
+
+### Handling/Triggering Events in mJS
+You can add event handling in mJS by adding this to one of your `.js` files:
+
+```javascript
+let CaptivePortalWiFiSetup = {};
+/**
+ * MGOS_CAPTIVE_PORTAL_WIFI_SETUP_TEST_START
+ * 
+ * Called when test is started via RPC
+ */
+CaptivePortalWiFiSetup.START = Event.baseNumber("CPS");
+
+/**
+ * MGOS_CAPTIVE_PORTAL_WIFI_SETUP_TEST_SUCCESS
+ * 
+ * Succesful test called via RPC method(ev_data: struct mgos_config_wifi_sta * sta)
+ */
+CaptivePortalWiFiSetup.SUCCESS = CaptivePortalWiFiSetup.START + 1;
+
+/**
+ * MGOS_CAPTIVE_PORTAL_WIFI_SETUP_TEST_FAILED
+ * 
+ * Succesful test called via RPC method(ev_data: struct mgos_config_wifi_sta * sta)
+ */
+CaptivePortalWiFiSetup.FAILED = CaptivePortalWiFiSetup.START + 2;
+```
 
 ## Available Functions/Methods
 

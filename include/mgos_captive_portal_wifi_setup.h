@@ -24,7 +24,7 @@
 
 typedef void (*wifi_setup_test_cb_t)(bool result, char *ssid, char* password, void *userdata);
 
-#define MGOS_CAPTIVE_PORTAL_WIFI_SETUP_EV_BASE MGOS_EVENT_BASE('W', 'P', 'S')
+#define MGOS_CAPTIVE_PORTAL_WIFI_SETUP_EV_BASE MGOS_EVENT_BASE('C', 'P', 'S')
 
 enum mgos_wifi_captive_portal_event
 {
