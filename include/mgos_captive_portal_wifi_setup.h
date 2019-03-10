@@ -76,7 +76,7 @@ bool mgos_captive_portal_wifi_setup_test_ent(char *ssid, char *pass, char* user,
  * @return true 
  * @return false 
  */
-bool mgos_captive_portal_wifi_setup_test(char *ssid, char *pass, wifi_setup_test_cb_t cb, void *userdata, char* user);
+bool mgos_captive_portal_wifi_setup_test(char *ssid, char *pass, wifi_setup_test_cb_t cb, void *userdata );
 
 #ifdef __cplusplus
 }

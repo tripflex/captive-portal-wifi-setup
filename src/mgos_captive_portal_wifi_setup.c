@@ -190,8 +190,6 @@ static bool wifi_setup_test_start(wifi_setup_test_cb_t cb, void *userdata){
         s_connect_timer_id = mgos_set_timer(timeout_ms, 0, sta_connect_timeout_timer_cb, NULL);
     }
 
-    LOG(LL_INFO, ("Captive Portal WiFi Setup Testing SSID: %s PASS: %s", ssid, pass));
-
     mgos_wifi_disconnect();
     bool result = mgos_wifi_setup_sta(sp_test_sta_vals);
 
@@ -219,6 +217,8 @@ bool mgos_captive_portal_wifi_setup_test_ent(char *ssid, char *pass, char* user,
     sp_test_sta_vals->user = user;
     sp_test_sta_vals->anon_identity = user;
     sp_test_sta_vals->ca_cert = "";
+    
+    LOG(LL_INFO, ("Captive Portal WiFi Setup Testing SSID: %s PASS: %s USER: %s", ssid, pass, user));
 
     return wifi_setup_test_start(cb, userdata);
 }
@@ -241,6 +241,8 @@ bool mgos_captive_portal_wifi_setup_test(char *ssid, char *pass, wifi_setup_test
     sp_test_sta_vals->user = "";
     sp_test_sta_vals->anon_identity = "";
     sp_test_sta_vals->ca_cert = "";
+    
+    LOG(LL_INFO, ("Captive Portal WiFi Setup Testing SSID: %s PASS: %s", ssid, pass));
 
     return wifi_setup_test_start(cb, userdata);
 }
