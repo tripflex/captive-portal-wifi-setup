@@ -43,7 +43,6 @@ static void clear_timeout_vals(void){
     remove_event_handlers();
     s_connection_retries = 0;
 
-    mgos_event_trigger(MGOS_CAPTIVE_PORTAL_WIFI_SETUP_TEST_FAILED, sp_test_sta_vals);
     if( s_wifi_setup_test_cb != NULL ){
         s_wifi_setup_test_cb( false, sp_test_sta_vals->ssid, sp_test_sta_vals->pass, s_wifi_setup_test_userdata );
     }
@@ -51,6 +50,7 @@ static void clear_timeout_vals(void){
 
 static void sta_connect_timeout_timer_cb(void *arg) {
     clear_timeout_vals();
+    mgos_event_trigger(MGOS_CAPTIVE_PORTAL_WIFI_SETUP_TEST_FAILED, sp_test_sta_vals);
     LOG(LL_ERROR, ("Captive Portal WiFi Setup STA: Connect timeout"));
 
     (void) arg;
