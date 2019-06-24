@@ -22,7 +22,7 @@
 #include <mgos.h>
 #include "mgos_event.h"
 
-typedef void (*wifi_setup_test_cb_t)(bool result, char *ssid, char* password, void *userdata);
+typedef void (*wifi_setup_test_cb_t)(bool result, const char *ssid, const char* password, void *userdata);
 
 #define MGOS_CAPTIVE_PORTAL_WIFI_SETUP_EV_BASE MGOS_EVENT_BASE('C', 'P', 'S')
 
