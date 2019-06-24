@@ -19,6 +19,7 @@ config_schema:
   - [ "cportal.setup.copy", "i", 0, {title: "Copy SSID and Password to this STA ID after succesful test ( 0 - wifi.sta | 1 - wifi.sta1 | 2 - wifi.sta2 )"}]
   - [ "cportal.setup.timeout", "i", 30, {title: "Timeout, in seconds, before considering a WiFi connection test as failed"}]
   - [ "cportal.setup.disable", "i", 2, {title: "Action to perform after successful test and copy/save values -- 0 - do nothing, 1 - Disable AP (wifi.ap.enable), 2 - Disable AP and Captive Portal (cportal.enable)"}]
+  - [ "cportal.setup.enable", "i", 0, {title: "Settings to enable after successful test and copy/save values -- 0 - do nothing, 1 - Enable DNS SD (dns_sd.enable)"}]  
   - [ "cportal.setup.reboot", "i", 0, {title: "0 to disable, or value (in seconds) to wait and then reboot device, after successful test (and copy/save values)"}]
 
 libs:

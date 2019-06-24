@@ -137,6 +137,11 @@ static void ip_aquired_cb(int ev, void *ev_data, void *userdata){
             mgos_sys_config_set_cportal_enable(false);
         }
 
+        int enable = mgos_sys_config_get_cportal_setup_enable();
+        if( enable == 1 ){
+            mgos_sys_config_set_dns_sd_enable(true);
+        }
+
         char *err = NULL;
         if (!save_cfg(&mgos_sys_config, &err)){
             LOG(LL_ERROR, ("Copy STA Values, Save Config Error: %s", err));

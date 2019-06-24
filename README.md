@@ -9,6 +9,7 @@
   - [Settings](#settings)
       - [`cportal.setup.copy` Setting](#cportalsetupcopy-setting)
       - [`cportal.setup.disable` Setting](#cportalsetupdisable-setting)
+      - [`cportal.setup.enable` Setting](#cportalsetupenable-setting)
       - [`cportal.redirect_file` Setting](#cportalredirect_file-setting)
   - [Installation/Usage](#installationusage)
     - [Full Captive Portal Stack](#full-captive-portal-stack)
@@ -44,6 +45,7 @@ Myles McNamara ( https://smyl.es )
 - Callback for failed/successful test for use in `C` or `mJS`
 - Disable Captive Portal setting after successful test
 - Support for testing Enterprise WPA2 Networks
+- Support for enabling DNS-SD after successful test
 
 ## Settings
 Check the `mos.yml` file for latest settings, all settings listed below are defaults
@@ -52,6 +54,7 @@ Check the `mos.yml` file for latest settings, all settings listed below are defa
   - [ "cportal.setup.copy", "i", 0, {title: "Copy SSID and Password to this STA ID after succesful test ( 0 - wifi.sta | 1 - wifi.sta1 | 2 - wifi.sta2 )"}]
   - [ "cportal.setup.timeout", "i", 30, {title: "Timeout, in seconds, before considering a WiFi connection test as failed"}]
   - [ "cportal.setup.disable", "i", 2, {title: "Action to perform after successful test and copy/save values -- 0 - do nothing, 1 - Disable AP (wifi.ap.enable), 2 - Disable AP and Captive Portal (cportal.enable)"}]
+  - [ "cportal.setup.enable", "i", 0, {title: "Settings to enable after successful test and copy/save values -- 0 - do nothing, 1 - Enable DNS SD (dns_sd.enable)"}]
   - [ "cportal.setup.reboot", "i", 0, {title: "0 to disable, or value (in seconds) to wait and then reboot device, after successful test (and copy/save values)"}]
 
 ```
@@ -59,10 +62,15 @@ Check the `mos.yml` file for latest settings, all settings listed below are defa
 Set this equal to the STA ID you want to save the values to (if you want to save them after successful test).  Use `-1` to disable saving after successful test.
 
 #### `cportal.setup.disable` Setting
-Action to perform after successful test and copy/save values (if enabled)
+Action to perform after successful test and copy/save values (if not set to `0`)
  - `0` - Do Nothing
  - `1` - Disable AP `wifi.ap.enable`
  - `2` - Disable AP `wifi.ap.enable` and Captive Portal `cportal.enable`
+
+#### `cportal.setup.enable` Setting
+Action to perform after successful test and copy/save values (if not set to `0`)
+ - `0` - Do Nothing
+ - `1` - Enable DNS-SD `dns_sd.enable`
 
 #### `cportal.redirect_file` Setting
 This setting if for if you want to use your own custom HTML file as the "redirect" file sent that includes a `meta` refresh tag.  This setting is optional, and when not defined, a dynamically generated response will be sent, that looks similar to this:
@@ -189,7 +197,7 @@ The `mgos_captive_portal_wifi_setup_test` will return `true` if the test was sta
 
 The `wifi_setup_test_cb_t` is for a callback (optional) after a successful/failed wifi test.
 ```C
-typedef void (*wifi_setup_test_cb_t)(bool result, char *ssid, char* password, void *userdata);
+typedef void (*wifi_setup_test_cb_t)(bool result, const char *ssid, const char* password, void *userdata);
 ```
 
 It will return the result `false` for failed `true` for success, the tested SSID, Password, and any userdata if you passed it when originally calling the function.
@@ -204,6 +212,11 @@ testWiFi( "My SSID", "somePassword", function( success, ssid, pass, userdata){
 ```
 
 ## Changelog
+
+**1.0.2** (June 24, 2019)
+ - Fixed 'dicards const' error during build due to `mgos_config_wifi_sta` now using `const` - props @zernyu
+ - Fixed setup failed event being called on successful test - props @pohy
+ - Added `cportal.setup.enable` to enable settings after successful test
 
 **1.0.1** (March 10, 2019) 
  - Added support for Enterprise Networks
