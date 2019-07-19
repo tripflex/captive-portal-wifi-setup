@@ -15,6 +15,7 @@ includes:
 
 config_schema:
   - [ "cportal", "o", {title: "Captive Portal configurations"}]
+  - [ "cportal.enable", "b", {title: "Captive Portal enable flag"}]
   - [ "cportal.setup", "o", {title: "Captive Portal WiFi Setup configurations"}]
   - [ "cportal.setup.copy", "i", 0, {title: "Copy SSID and Password to this STA ID after succesful test ( 0 - wifi.sta | 1 - wifi.sta1 | 2 - wifi.sta2 )"}]
   - [ "cportal.setup.timeout", "i", 30, {title: "Timeout, in seconds, before considering a WiFi connection test as failed"}]
@@ -24,6 +25,7 @@ config_schema:
 
 libs:
   - origin: https://github.com/mongoose-os-libs/wifi
+  - origin: https://github.com/mongoose-os-libs/dns-sd.git
 
 tags:
   - c
