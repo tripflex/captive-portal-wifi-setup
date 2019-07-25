@@ -21,6 +21,10 @@ config_schema:
   - [ "cportal.setup.disable", "i", 2, {title: "Action to perform after successful test and copy/save values -- 0 - do nothing, 1 - Disable AP (wifi.ap.enable), 2 - Disable AP and Captive Portal (cportal.enable)"}]
   - [ "cportal.setup.enable", "i", 0, {title: "Settings to enable after successful test and copy/save values -- 0 - do nothing, 1 - Enable DNS SD (dns_sd.enable)"}]  
   - [ "cportal.setup.reboot", "i", 0, {title: "0 to disable, or value (in seconds) to wait and then reboot device, after successful test (and copy/save values)"}]
+  # The below settings are just placeholders to prevent errors when building or using above feature to set config values
+  - [ "cportal.enable", "b", false, {title: "Placeholder for captive portal lib"}]
+  - [ "dns_sd", "o", {title: "DNS-SD service discovery"}]
+  - [ "dns_sd.enable", "b", false, {title: "Enable service discovery"}]
 
 libs:
   - origin: https://github.com/mongoose-os-libs/wifi
