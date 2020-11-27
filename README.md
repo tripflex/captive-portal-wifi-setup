@@ -212,6 +212,8 @@ testWiFi( "My SSID", "somePassword", function( success, ssid, pass, userdata){
 ```
 
 ## Changelog
+**1.0.3** (November 27, 2020)
+ - Fixed `protocol` being set in `mgos_config_wifi_sta` (should only be set on ESP32 devices)
 
 **1.0.2** (June 24, 2019)
  - Fixed 'dicards const' error during build due to `mgos_config_wifi_sta` now using `const` - props @zernyu
