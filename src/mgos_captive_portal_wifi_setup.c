@@ -224,8 +224,9 @@ bool mgos_captive_portal_wifi_setup_test_ent(char *ssid, char *pass, char* user,
     sp_test_sta_vals->user = user;
     sp_test_sta_vals->anon_identity = user;
     sp_test_sta_vals->ca_cert = "";
+#if CS_PLATFORM == CS_P_ESP32
 	sp_test_sta_vals->protocol = mgos_sys_config_get_wifi_sta_protocol();
-    
+#endif
     LOG(LL_INFO, ("Captive Portal WiFi Setup Testing SSID: %s PASS: %s USER: %s", ssid, pass, user));
 
     return wifi_setup_test_start(cb, userdata);
@@ -249,7 +250,9 @@ bool mgos_captive_portal_wifi_setup_test(char *ssid, char *pass, wifi_setup_test
     sp_test_sta_vals->user = "";
     sp_test_sta_vals->anon_identity = "";
     sp_test_sta_vals->ca_cert = "";
+#if CS_PLATFORM == CS_P_ESP32
 	sp_test_sta_vals->protocol = mgos_sys_config_get_wifi_sta_protocol();
+#endif
     
     LOG(LL_INFO, ("Captive Portal WiFi Setup Testing SSID: %s PASS: %s", ssid, pass));
 
